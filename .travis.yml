@@ -1,21 +1,30 @@
+dist: xenial
+
 language: node_js
 node_js:
-  - '10'
-dist: trusty
+  - '10.14.2'
+
 addons:
-  apt:
-    packages:
-    # This is required to run new chrome on old trusty
-    - libnss3
+  chrome: stable
+
+script:
+  - npm run build
+  - npm run test
+
 notifications:
   email: false
-cache:
-  directories:
-  - node_modules
-# allow headful tests
-before_install:
-# Enable user namespace cloning
-- "sysctl kernel.unprivileged_userns_clone=1"
-# Launch XVFB
-- "export DISPLAY=:99.0"
-- "sh -e /etc/init.d/xvfb start"
+
+before_deploy:
+  - cd dist
+  - echo "$NPMRC_LINE1_REGISTRY" > .npmrc
+  - echo "$NPMRC_LINE2_REGISTRY_AUTH" >> .npmrc
+
+deploy:
+  provider: npm
+  skip_cleanup: true
+  email: github@careevolution.com
+  api_key: "$PROGET_CAREEV_APIKEY"
+  on:
+    tags: true
+    repo: CareEvolution/ngx-popper
+    all_branches: true
