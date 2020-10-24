@@ -78,7 +78,7 @@ export class PopperContent implements OnDestroy {
 
   private globalResize: any;
 
-  @ViewChild("popperViewRef")
+  @ViewChild("popperViewRef", { static: false })
   popperViewRef: ElementRef;
 
   @HostListener('mouseover')
