@@ -9,7 +9,7 @@ addons:
 
 script:
   - npm run build
-  - npm run test
+  # - npm run test
 
 notifications:
   email: false
